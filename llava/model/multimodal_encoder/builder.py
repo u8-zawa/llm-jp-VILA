@@ -6,6 +6,7 @@ from .clip_encoder import CLIPVisionTower, CLIPVisionTowerS2
 from .siglip_encoder import SiglipVisionTower, SiglipVisionTowerS2
 from .intern_encoder import InternVisionTower
 from .radio_encoder import RADIOVisionTower
+from .clyp_encoder import CLYPVisionTower
 
 def build_vision_tower(
     model_name_or_path: str, config: PretrainedConfig
@@ -36,6 +37,8 @@ def build_vision_tower(
                 model_name_or_path, config=config, drop_path_rate=0.0)
     elif "radio" in vision_tower_name:
         vision_tower = RADIOVisionTower(model_name_or_path, config)
+    elif "clyp" in vision_tower_name or vision_tower_name == "line-corporation/clip-japanese-base":
+        vision_tower = CLYPVisionTower(model_name_or_path, config)
     elif "clip" in vision_tower_name:
         if use_s2:
             vision_tower = CLIPVisionTowerS2(model_name_or_path, config)
