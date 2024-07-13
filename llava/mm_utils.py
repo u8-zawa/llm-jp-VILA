@@ -205,7 +205,10 @@ def process_images(images, image_processor, model_cfg):
 def tokenizer_image_token(
     prompt, tokenizer, image_token_index=IMAGE_TOKEN_INDEX, return_tensors=None
 ):
-    prompt_chunks = [tokenizer(chunk).input_ids for chunk in prompt.split("<image>")]
+    if tokenizer.eos_token == "<EOD|LLM-jp>":
+        prompt_chunks = [tokenizer(chunk, add_special_tokens=False).input_ids for chunk in prompt.split("<image>")]
+    else:
+        prompt_chunks = [tokenizer(chunk).input_ids for chunk in prompt.split("<image>")]
 
     def insert_separator(X, sep):
         return [ele for sublist in zip(X, [sep] * len(X)) for ele in sublist][:-1]

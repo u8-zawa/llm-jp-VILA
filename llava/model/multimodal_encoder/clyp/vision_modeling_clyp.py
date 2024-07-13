@@ -14,6 +14,7 @@ from .modeling_clyp import CLYPPreTrainedModel
 class CLYPVisionModel(CLYPPreTrainedModel):
     def __init__(self, config: CLYPConfig):
         super().__init__(config)
+        config.vision_encoder_config.backbone_config.pretrained = False
         self.vision_encoder = create_vision_encoder(config.vision_encoder_config)
         self.initialize_clip(
             learn_temperature=config.learn_temperature,

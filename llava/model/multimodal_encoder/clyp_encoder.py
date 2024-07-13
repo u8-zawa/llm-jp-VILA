@@ -11,19 +11,19 @@ class CLYPVisionTower(VisionTower):
     def __init__(self, model_name_or_path: str, config: PretrainedConfig):
         super().__init__(model_name_or_path, config)
         self.image_processor = CLYPImageProcessor.from_pretrained(model_name_or_path)
-        # This cause an error
-        # self.vision_tower = CLYPVisionModel.from_pretrained(
-        #     model_name_or_path, torch_dtype=eval(config.model_dtype),
-        # )
         self.vision_tower = CLYPVisionModel.from_pretrained(
-            model_name_or_path
+            model_name_or_path, torch_dtype=eval(config.model_dtype),
         )
         self.vision_tower.config.hidden_size = 768
         self.vision_tower.config.image_size = 224
+        self.image_processor.crop_size = {
+            'height': 224,
+            'width': 224
+        }
         self.is_loaded = True
 
 
-# class CLIPVisionTowerS2(VisionTowerS2):
+# class CLYPVisionTowerS2(VisionTowerS2):
 #     def __init__(self, model_name_or_path: str, config: PretrainedConfig):
 #         super().__init__(model_name_or_path, config)
 #         self.image_processor = CLYPImageProcessor.from_pretrained(model_name_or_path)
@@ -37,5 +37,5 @@ class CLYPVisionTower(VisionTower):
 
 #         self.is_loaded = True
 
-# AutoConfig.register("clyp", CLYPVisionConfig)
-# AutoModel.register(CLYPVisionConfig, CLYPVisionModel)
+# AutoConfig.register("clyp", CLYPConfig)
+# AutoModel.register(CLYPConfig, CLYPVisionModel)

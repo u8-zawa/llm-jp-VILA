@@ -228,7 +228,8 @@ def load_pretrained_model(
         image_processor = vision_tower.image_processor
 
     if hasattr(model.llm.config, "max_sequence_length"):
-        context_len = model.config.max_sequence_length
+        # context_len = model.config.max_sequence_length
+        context_len = model.llm.config.max_sequence_length
     else:
         context_len = 2048
 

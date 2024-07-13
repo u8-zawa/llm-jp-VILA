@@ -30,6 +30,7 @@ class SeparatorStyle(Enum):
     LLAMA_2 = auto()
     MISTRAL = auto()
     LLAMA_3 = auto()
+    LLMJP_V2 = auto()
 
 
 @dataclasses.dataclass
@@ -135,6 +136,16 @@ class Conversation:
                     ret += message + seps[i % 2]
                 else:
                     ret += ""
+        elif self.sep_style == SeparatorStyle.LLMJP_V2:
+            seps = [self.sep, self.sep2]
+            ret = self.system
+            for i, (role, message) in enumerate(messages):
+                if message:
+                    if type(message) is tuple:
+                        message, _, _ = message
+                    ret += "\n\n### " + role + ":\n" + message + seps[i % 2]
+                else:
+                    ret += "\n\n### " + role + ":\n"
         else:
             raise ValueError(f"Invalid style: {self.sep_style}")
 
@@ -446,6 +457,18 @@ llama_3_chat = Conversation(
 )
 
 
+conv_llmjp_v2 = Conversation(
+    system="以下は、タスクを説明する指示です。要求を適切に満たす応答を書きなさい。",
+    roles=("指示", "応答"),
+    version="llmjp_v2",
+    messages=(),
+    offset=0,
+    sep_style=SeparatorStyle.LLMJP_V2,
+    sep="",
+    sep2="<EOD|LLM-jp>",
+)
+
+
 default_conversation = conv_vicuna_v1
 conv_templates = {
     "default": conv_vicuna_v0,
@@ -467,6 +490,8 @@ conv_templates = {
     "llava_llama_2": conv_llava_llama_2,
 
     "mpt": conv_mpt,
+
+    "llmjp_v2": conv_llmjp_v2,
 }
 
 

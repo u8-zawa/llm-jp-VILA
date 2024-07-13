@@ -43,6 +43,22 @@ def register_datasets_mixtures():
     )
     add_dataset(llava_1_5_mm_align)
 
+    llava_1_5_mm_align_en = Dataset(
+        dataset_name='llava_1_5_mm_align_en',
+        dataset_type='torch',
+        data_path='./playground/data/LLaVA-Pretrain/blip_laion_cc_sbu_558k.json',
+        image_path='./playground/data/LLaVA-Pretrain-JA/images'
+    )
+    add_dataset(llava_1_5_mm_align_en)
+
+    llava_1_5_mm_align_ja = Dataset(
+        dataset_name='llava_1_5_mm_align_ja',
+        dataset_type='torch',
+        data_path='./playground/data/LLaVA-Pretrain-JA/llava_pretrain_blip_laion_cc_sbu_558k_ja.jsonl',
+        image_path='./playground/data/LLaVA-Pretrain-JA/images'
+    )
+    add_dataset(llava_1_5_mm_align_ja)
+
     # Pretrain
     coyo_25m = Dataset(
         dataset_name='coyo',
@@ -81,6 +97,38 @@ def register_datasets_mixtures():
         description="",
     )
     add_dataset(llava_instruct)
+
+    llava_instruct_en = Dataset(
+        dataset_name='llava_instruct_en',
+        dataset_type='torch',
+        data_path='./playground/data/LLaVA-Instruct-150K/llava_instruct_150k.json',
+        image_path='./playground/data/coco/train2017'
+    )
+    add_dataset(llava_instruct_en)
+    
+    llava_instruct_ja = Dataset(
+        dataset_name='llava_instruct_ja',
+        dataset_type='torch',
+        data_path='./playground/data/LLaVA-Instruct-150K-JA/llava_instruct_150k_ja.jsonl',
+        image_path='./playground/data/coco/train2017'
+    )
+    add_dataset(llava_instruct_ja)
+
+    llava_instruct_v1_5_en = Dataset(
+        dataset_name='llava_instruct_v1_5_en',
+        dataset_type='torch',
+        data_path='./playground/data/LLaVA-Instruct-150K/llava_v1_5_mix665k.json',
+        image_path='./playground/data'
+    )
+    add_dataset(llava_instruct_v1_5_en)
+
+    llava_instruct_v1_5_ja = Dataset(
+        dataset_name='llava_instruct_v1_5_ja',
+        dataset_type='torch',
+        data_path='./playground/data/LLaVA-v1.5-Instruct-620K-JA/llava_v1_5_instruct_620k_ja_v2.jsonl',
+        image_path='./playground/data'
+    )
+    add_dataset(llava_instruct_v1_5_ja)
 
     sharegpt4v_sft = Dataset(
         dataset_name='sharegpt4v_sft',
