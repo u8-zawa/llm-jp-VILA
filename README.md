@@ -105,7 +105,7 @@ https://github.com/Efficient-Large-Model/VILA/assets/7783214/80c47742-e873-4080-
 
 ## Installation
 
-```bash
+<!-- ```bash
 ./environment_setup.sh
 ```
 
@@ -126,10 +126,31 @@ pip install -e ".[train]"
 pip install git+https://github.com/huggingface/transformers@v4.36.2
 site_pkg_path=$(python -c 'import site; print(site.getsitepackages()[0])')
 cp -rv ./llava/train/transformers_replace/* $site_pkg_path/transformers/
+``` -->
+
+
+```
+# python 3.10
+python3 -m venv venv
+source venv/bin/activate
+
+pip install --upgrade pip  # enable PEP 660 support
+wget https://github.com/Dao-AILab/flash-attention/releases/download/v2.4.2/flash_attn-2.4.2+cu118torch2.0cxx11abiFALSE-cp310-cp310-linux_x86_64.whl
+pip install flash_attn-2.4.2+cu118torch2.0cxx11abiFALSE-cp310-cp310-linux_x86_64.whl
+pip install -e .
+pip install -e ".[train]"
+
+pip install git+https://github.com/huggingface/transformers@v4.36.2
+cp -rv ./llava/train/transformers_replace/* ./venv/lib/python3.10/site-packages/transformers/
+# Disable initialization of Eva parameters
+cp -rv ./llava/train/timm_replace/* ./venv/lib/python3.10/site-packages/timm/
 ```
 
 ## Training
 
+[scripts/mdx/train](scripts/mdx/train/)
+
+<!-- 
 VILA training contains three steps, for specific hyperparameters, please check out the [scripts/v1_5](scripts/v1_5) folder:
 
 ### Step-1: Alignment
@@ -157,7 +178,7 @@ This is the last stage of VILA training, in which we tune the model to follow mu
 ```bash
 bash scripts/v1_5/paper/3_sft.sh [STAGE2_PATH] [OUTPUT_NAME]
 ```
-The stage 3 script takes in two arguments. `STAGE2_PATH` points to the `OUTPUT_NAME` of the stage 2 script (i.e. where the stage 2 checkpoint is stored). `OUTPUT_NAME` is the desired folder name under `checkpoints` that stores the final checkpoint.
+The stage 3 script takes in two arguments. `STAGE2_PATH` points to the `OUTPUT_NAME` of the stage 2 script (i.e. where the stage 2 checkpoint is stored). `OUTPUT_NAME` is the desired folder name under `checkpoints` that stores the final checkpoint. -->
 
 <!-- ## Evaluations
 
@@ -207,10 +228,28 @@ Please follow the evaluation steps in [Video-LLaVA](https://github.com/PKU-YuanG
 ./scripts/v1_5/eval/video_chatgpt/eval_all.sh [MODEL_NAME]
 ```
 
-
+<!--  -->
 ## Inference
 
-We provide snippets for quick inference with user prompts and images.
+```bash
+python -W ignore scripts/mdx/eval/run_inference_ja.py \
+    --model-path checkpoints/clyp-llm-jp-v2_1_mm-align_en_3_sft_v1-5en_20240702 \
+    --query "<image>\n Please describe this image." \
+    --image-file "https://raw.githubusercontent.com/tosiyuki/LLaVA-JP/main/imgs/sample1.jpg"
+```
+
+### heron bench
+```bash
+python -W ignore scripts/mdx/eval/inference_heron_bench.py \
+    --model-path ./checkpoints/clyp-llm-jp-v2_1_mm-align_ja_3_sft_v1-5ja_20240703 \
+    --question_file_path ./playground/eval_data/Japanese-Heron-Bench/questions_ja.jsonl \
+    --image_dir_path ./playground/eval_data/Japanese-Heron-Bench/images/ \
+    --output_dir_path ./scripts/mdx/eval/output/
+```
+- question_file_path: [questions_ja.jsonl](https://github.com/turingmotors/heron/blob/main/playground/data/japanese-heron-bench/questions_ja.jsonl) のパス
+- image_dir_path: Heron Benchの画像ディレクトリのパス
+
+<!-- We provide snippets for quick inference with user prompts and images.
 
 Llama-3-VILA1.5-8B inference:
 ```bash
@@ -237,8 +276,8 @@ python -W ignore llava/eval/run_vila.py \
     --conv-mode vicuna_v1 \
     --query "<video>\n Please describe this video." \
     --video-file "demo.mp4"
-```
-
+``` -->
+<!-- 
 ## Quantization and Deployment
 
 Our VILA models are quantized by [AWQ](https://arxiv.org/abs/2306.00978) into 4 bits for efficient inference on the edge. We provide a push-the-button [script](https://github.com/mit-han-lab/llm-awq/blob/main/scripts/vila_example.sh) to quantize VILA with AWQ.
@@ -249,10 +288,10 @@ We support AWQ-quantized 4bit VILA on GPU platforms via [TinyChat](https://githu
 
 ### Running VILA on laptops
 
-We further support our AWQ-quantized 4bit VILA models on various CPU platforms with both x86 and ARM architectures with our [TinyChatEngine](https://github.com/mit-han-lab/TinyChatEngine). We also provide a detailed [tutorial](https://github.com/mit-han-lab/TinyChatEngine/tree/main?tab=readme-ov-file#deploy-vision-language-model-vlm-chatbot-with-tinychatengine) to help the users deploy VILA on different CPUs.
+We further support our AWQ-quantized 4bit VILA models on various CPU platforms with both x86 and ARM architectures with our [TinyChatEngine](https://github.com/mit-han-lab/TinyChatEngine). We also provide a detailed [tutorial](https://github.com/mit-han-lab/TinyChatEngine/tree/main?tab=readme-ov-file#deploy-vision-language-model-vlm-chatbot-with-tinychatengine) to help the users deploy VILA on different CPUs. -->
 
 
-## Checkpoints
+<!-- ## Checkpoints
 
 We release [VILA1.5-3B](https://hf.co/Efficient-Large-Model/VILA1.5-3b), [VILA1.5-3B-S2](https://hf.co/Efficient-Large-Model/VILA1.5-3b-s2), [Llama-3-VILA1.5-8B](https://hf.co/Efficient-Large-Model/Llama-3-VILA1.5-8b), [VILA1.5-13B](https://hf.co/Efficient-Large-Model/VILA1.5-13b), [VILA1.5-40B](https://hf.co/Efficient-Large-Model/VILA1.5-40b) and the 4-bit [AWQ](https://arxiv.org/abs/2306.00978)-quantized models [VILA1.5-3B-AWQ](https://hf.co/Efficient-Large-Model/VILA1.5-3b-AWQ), [VILA1.5-3B-S2-AWQ](https://hf.co/Efficient-Large-Model/VILA1.5-3b-s2-AWQ), [Llama-3-VILA1.5-8B-AWQ](https://hf.co/Efficient-Large-Model/Llama-3-VILA1.5-8b-AWQ), [VILA1.5-13B-AWQ](https://hf.co/Efficient-Large-Model/VILA1.5-13b-AWQ), [VILA1.5-40B-AWQ](https://hf.co/Efficient-Large-Model/VILA1.5-40b-AWQ).
 
