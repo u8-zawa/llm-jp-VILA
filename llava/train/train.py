@@ -372,7 +372,7 @@ def train():
             conversation_lib.default_conversation = conversation_lib.conv_templates[
                 "vicuna_v1"
             ]
-        print(conversation_lib.default_conversation)
+        print(conversation_lib.default_conversation.version)
 
     # kentang-mit@: It will be useful in on-the-fly packing
     model.llm.pad_token_id = tokenizer.pad_token_id

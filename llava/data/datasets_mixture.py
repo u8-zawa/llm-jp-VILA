@@ -59,6 +59,14 @@ def register_datasets_mixtures():
     )
     add_dataset(llava_1_5_mm_align_ja)
 
+    llm_jp_mm_pair_step0_558k = Dataset(
+        dataset_name='llm_jp_mm_pair_step0_558k',
+        dataset_type='torch',
+        data_path='./playground/data/alt_pair_ja/llm-jp_mm_pair_step0_558k.json',
+        image_path='./playground/data/alt_pair_ja/image_step0'
+    )
+    add_dataset(llm_jp_mm_pair_step0_558k)
+
     # Pretrain
     coyo_25m = Dataset(
         dataset_name='coyo',
