@@ -31,6 +31,7 @@ class SeparatorStyle(Enum):
     MISTRAL = auto()
     LLAMA_3 = auto()
     LLMJP_V2 = auto()
+    LLMJP_V3 = auto()
 
 
 @dataclasses.dataclass
@@ -136,7 +137,7 @@ class Conversation:
                     ret += message + seps[i % 2]
                 else:
                     ret += ""
-        elif self.sep_style == SeparatorStyle.LLMJP_V2:
+        elif self.sep_style == SeparatorStyle.LLMJP_V2 or self.sep_style == SeparatorStyle.LLMJP_V3:
             seps = [self.sep, self.sep2]
             ret = self.system
             for i, (role, message) in enumerate(messages):
@@ -469,6 +470,18 @@ conv_llmjp_v2 = Conversation(
 )
 
 
+conv_llmjp_v3 = Conversation(
+    system="以下は、タスクを説明する指示です。要求を適切に満たす応答を書きなさい。",
+    roles=("指示", "応答"),
+    version="llmjp_v3",
+    messages=(),
+    offset=0,
+    sep_style=SeparatorStyle.LLMJP_V3,
+    sep="",
+    sep2="</s>",
+)
+
+
 default_conversation = conv_vicuna_v1
 conv_templates = {
     "default": conv_vicuna_v0,
@@ -492,6 +505,7 @@ conv_templates = {
     "mpt": conv_mpt,
 
     "llmjp_v2": conv_llmjp_v2,
+    "llmjp_v3": conv_llmjp_v3,
 }
 
 
