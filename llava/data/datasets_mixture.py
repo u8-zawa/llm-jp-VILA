@@ -88,6 +88,30 @@ def register_datasets_mixtures():
     )
     add_dataset(sharegpt4v_pretrain)
 
+    coyo_6m = Dataset(
+        dataset_name='coyo_6m',
+        dataset_type='coyo',
+        data_path='./playground/data/coyo-700m/pkl03-split')
+    add_dataset(coyo_6m)
+
+    mmc4core_6m = Dataset(
+        dataset_name='mmc4core_6m',
+        dataset_type='mmc4',
+        data_path='./playground/data/mmc4-core/pkl-core-limit-tokens')
+    add_dataset(mmc4core_6m)
+
+    llm_jp_mm_pair_step1_6m = Dataset(
+        dataset_name='llm_jp_mm_pair_step1_6m',
+        dataset_type='coyo',
+        data_path='./playground/data/alt_pair_ja/pkl02')
+    add_dataset(llm_jp_mm_pair_step1_6m)
+
+    llm_jp_mm_interleaved_step1_6m = Dataset(
+        dataset_name='llm_jp_mm_interleaved_step1_6m',
+        dataset_type='mmc4',
+        data_path='./playground/data/mmc4_ja/pkl-limit-tokens')
+    add_dataset(llm_jp_mm_interleaved_step1_6m)
+
     # SFT
     sharegpt4v_gpt4_100k = Dataset(
         dataset_name="sharegpt4v_gpt4_100k",

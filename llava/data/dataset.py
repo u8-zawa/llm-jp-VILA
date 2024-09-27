@@ -1023,7 +1023,8 @@ class LazyMMC4Dataset(Dataset):
     """Dataset for supervised fine-tuning.
     This class is implemented by Ji Lin and Haotian Tang."""
 
-    num_image_tokens = 576
+    # num_image_tokens = 576
+    num_image_tokens = 729
 
     def __init__(
         self,
@@ -1216,7 +1217,8 @@ class LazyCoyoDataset(Dataset):
     """Dataset for supervised fine-tuning.
     This class is implemented by Ji Lin and Haotian Tang."""
 
-    num_image_tokens = 576
+    # num_image_tokens = 576
+    num_image_tokens = 729
 
     def __init__(
         self,
