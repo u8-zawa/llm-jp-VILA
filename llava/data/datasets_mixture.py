@@ -138,13 +138,13 @@ def register_datasets_mixtures():
     )
     add_dataset(llava_instruct_en)
     
-    llava_instruct_ja = Dataset(
-        dataset_name='llava_instruct_ja',
+    llava_instruct_ja_translate = Dataset(
+        dataset_name='llava_instruct_ja_translate',
         dataset_type='torch',
         data_path='./playground/data/LLaVA-Instruct-150K-JA/llava_instruct_150k_ja.jsonl',
         image_path='./playground/data/coco/train2017'
     )
-    add_dataset(llava_instruct_ja)
+    add_dataset(llava_instruct_ja_translate)
 
     llava_instruct_v1_5_en = Dataset(
         dataset_name='llava_instruct_v1_5_en',
@@ -154,13 +154,53 @@ def register_datasets_mixtures():
     )
     add_dataset(llava_instruct_v1_5_en)
 
-    llava_instruct_v1_5_ja = Dataset(
-        dataset_name='llava_instruct_v1_5_ja',
+    llava_instruct_v1_5_ja_translate = Dataset(
+        dataset_name='llava_instruct_v1_5_ja_translate',
         dataset_type='torch',
         data_path='./playground/data/LLaVA-v1.5-Instruct-620K-JA/llava_v1_5_instruct_620k_ja_v2.jsonl',
         image_path='./playground/data'
     )
-    add_dataset(llava_instruct_v1_5_ja)
+    add_dataset(llava_instruct_v1_5_ja_translate)
+
+    llava_instruct_v1_5_en_subset = Dataset(
+        dataset_name='llava_instruct_v1_5_en_subset',
+        dataset_type='torch',
+        data_path='./playground/data/LLaVA-Instruct-150K/llava_v1_5_subset_358k.json',
+        image_path='./playground/data'
+    )
+    add_dataset(llava_instruct_v1_5_en_subset)
+
+    llava_instruct_ja = Dataset(
+        dataset_name='llava_instruct_ja',
+        dataset_type='torch',
+        data_path='./playground/data/llava_instruct_ja/llava_instruct_ja_156k.json',
+        image_path='./playground/data'
+    )
+    add_dataset(llava_instruct_ja)
+
+    japanese_photos_conv = Dataset(
+        dataset_name='japanese_photos_conv',
+        dataset_type='torch',
+        data_path='./playground/data/japanese-photos/japanese_photos_conv_12k.json',
+        image_path='./playground/data/japanese-photos/images'
+    )
+    add_dataset(japanese_photos_conv)
+
+    ja_vg_vqa = Dataset(
+        dataset_name='ja_vg_vqa',
+        dataset_type='torch',
+        data_path='./playground/data/ja-vg-vqa/ja-vg-vqa_instruct_99k.json',
+        image_path='./playground/data'
+    )
+    add_dataset(ja_vg_vqa)
+
+    synthdog_ja_subset = Dataset(
+        dataset_name='synthdog_ja_subset',
+        dataset_type='torch',
+        data_path='./playground/data/synthdog-ja/synthdog_ja_102k.json',
+        image_path='./playground/data'
+    )
+    add_dataset(synthdog_ja_subset)
 
     sharegpt4v_sft = Dataset(
         dataset_name='sharegpt4v_sft',
