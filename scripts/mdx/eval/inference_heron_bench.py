@@ -28,7 +28,7 @@ def load_images(image_files):
 
 def main(args):
     disable_torch_init()
-    AutoConfig.register("clyp", CLYPConfig)
+    # AutoConfig.register("clyp", CLYPConfig)
 
     with open(args.question_file_path, "r") as f:
         questions = [json.loads(line) for line in f]
@@ -42,7 +42,7 @@ def main(args):
     for question in tqdm(questions):
         qs = "<image>\n" + question["text"]
 
-        conv_mode = args.conv_mode # "llmjp_v2"
+        conv_mode = args.conv_mode # "llmjp_v3"
         conv = conv_templates[conv_mode].copy()
         conv.append_message(conv.roles[0], qs)
         conv.append_message(conv.roles[1], None)
@@ -90,9 +90,9 @@ def main(args):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--model-path", type=str, default="checkpoints/clyp-llm-jp-v2_1_mm-align_en_3_sft_v1-5en_20240702")
+    parser.add_argument("--model-path", type=str, default="./checkpoints/llm-jp-3-13b-instruct_siglip_mlp2xgelu_step-2_20241004")
     parser.add_argument("--model-base", type=str, default=None)
-    parser.add_argument("--conv-mode", type=str, default="llmjp_v2")
+    parser.add_argument("--conv-mode", type=str, default="llmjp_v3")
     parser.add_argument("--question_file_path", type=str)
     parser.add_argument("--image_dir_path", type=str)
     parser.add_argument("--output_dir_path", type=str, default=f"{os.path.dirname(__file__)}/output/")
