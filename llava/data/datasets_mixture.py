@@ -47,7 +47,7 @@ def register_datasets_mixtures():
         dataset_name='llava_1_5_mm_align_en',
         dataset_type='torch',
         data_path='./playground/data/LLaVA-Pretrain/blip_laion_cc_sbu_558k.json',
-        image_path='./playground/data/LLaVA-Pretrain-JA/images'
+        image_path='./playground/data/LLaVA-Pretrain/images'
     )
     add_dataset(llava_1_5_mm_align_en)
 
@@ -109,7 +109,7 @@ def register_datasets_mixtures():
     llm_jp_mm_interleaved_step1_6m = Dataset(
         dataset_name='llm_jp_mm_interleaved_step1_6m',
         dataset_type='mmc4',
-        data_path='./playground/data/mmc4_ja/pkl-limit-tokens')
+        data_path='./playground/data/interleaved_ja/pkl-limit-tokens')
     add_dataset(llm_jp_mm_interleaved_step1_6m)
 
     # SFT

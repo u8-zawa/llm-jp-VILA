@@ -1,188 +1,111 @@
-# Data Preparation for Training VILA
+# Data Preparation
 
-To train VILA, we used the following datasets:
+The following table shows an overview of the datasets used for training.
 
-| Stage                   | Datasets                                                                         |
-| ----------------------- | -------------------------------------------------------------------------------- |
-| 1. Initialize projector | CC3M                                                                             |
-| 2. Pre-training         | MMC4-core, COYO-700M, ShreGPT4V_pretrain                                                      |
-| 3. SFT                  | LLaVA-Next mixture, VFLAN, WIT, GSM8K-ScRel-SFT, Sherlock, ScienceQA, Shot2story, Video_ChatGPT, Youcook2, Vatex, ShareGPT_Video |
+| Step | Language | Dataset | Images|
+|:---|:---|:---|---:|
+| Step-0 |Japanese|[Japanese image text pairs](https://gitlab.llm-jp.nii.ac.jp/datasets/llm-jp-japanese-image-text-pairs)|558K |
+|        |English |[LLaVA-Pretrain](https://huggingface.co/datasets/liuhaotian/LLaVA-Pretrain)|558K |
+| Step-1 |Japanese|[Japanese image text pairs](https://gitlab.llm-jp.nii.ac.jp/datasets/llm-jp-japanese-image-text-pairs)| 6M |
+|        |        |[Japanese interleaved data](https://gitlab.llm-jp.nii.ac.jp/datasets/llm-jp-japanese-interleaved-data)| 6M |
+|        |English |[coyo](https://github.com/kakaobrain/coyo-dataset) (subset) | 6M | 
+|        |        |[mmc4-core](https://github.com/allenai/mmc4) (subset) | 6M | 
+| Step-2 |Japanese|[llava-instruct-ja](https://huggingface.co/datasets/llm-jp/llava-instruct-ja)| 156K |
+|        |        |[japanese-photos-conv](https://huggingface.co/datasets/llm-jp/japanese-photos-conversation)| 12K |
+|        |        |[ja-vg-vqa](https://huggingface.co/datasets/llm-jp/ja-vg-vqa-conversation)| 99K |
+|        |        |[synthdog-ja (subset)](https://huggingface.co/datasets/llm-jp/synthdog-ja-subset-102k) | 102K |
+|        |English |[LLaVA](https://huggingface.co/datasets/liuhaotian/LLaVA-Instruct-150K) | 158K | 
+|        |        |[VQAv2](https://visualqa.org/) | 53K | 
+|        |        |[GQA](https://cs.stanford.edu/people/dorarad/gqa/index.html) | 46K | 
+|        |        |[OCRVQA](https://ocr-vqa.github.io/) | 80K | 
+|        |        |[TextVQA](https://textvqa.org/dataset/) | 22K | 
 
+## Step-0
 
+### Japanese image text pairs (Step-0)
 
+1. Download [llm-jp_mm_pair_step0_558k.json](https://gitlab.llm-jp.nii.ac.jp/datasets/llm-jp-japanese-image-text-pairs/-/blob/main/llm-jp_mm_pair_step0_558k.json?ref_type=heads) and place it in the `path/to/VILA-ja/playground/data/alt_pair_ja/` directory.
 
-### LLaVa-CC3M-Pretrain
+2. Download each image and save it in the `path/to/VILA-ja/playground/data/alt_pair_ja/image_step0/` directory. Each image file should be named according to the value of the "image" key.
 
-We use [LLaVA-CC3M-Pretrain-595K](https://huggingface.co/datasets/liuhaotian/LLaVA-CC3M-Pretrain-595K/blob/main/chat.json) to train the visual language projector
+### LLaVA-Pretrain
 
-### MMC4-Core Dataset
+We used [blip_laion_cc_sbu_558k.json](https://huggingface.co/datasets/liuhaotian/LLaVA-Pretrain/blob/main/blip_laion_cc_sbu_558k.json) for training.
 
-Due to the limit of compute, we pre-train VILA on the smaller core set of MMC4 instead of the full set.
+## Step-1
 
-1. Firstly, download the annotations of the MMC4-core dataset here: https://github.com/allenai/mmc4. We used the non-fewer-face split, and you may need to request the access [here](https://forms.gle/VYtcNY8aYaUANK9f8).
+You may find it helpful to refer to the code from the original [VILA Repository](https://github.com/NVlabs/VILA/tree/48aadd55c450b182f82f88ad340800428fa3a161/data_prepare).
 
-2. Now modify the input and output path in `mmc4_downloader.py` and run the following script to scrawl the MMC4 images:
+### Japanese image text pairs (Step-1)
 
-```bash
-cd mmc4
-python mmc4_downloader.py
-```
+1. Download all the jsonl files from [here](https://gitlab.llm-jp.nii.ac.jp/datasets/llm-jp-japanese-image-text-pairs).
 
-Note that due to the expiration of image urls, you may end up getting a subset of the entire corpus.
+2. Download each image, convert it to a Base64 string, and store it as the value of the `"image"` key.
 
-The scrawling may take a long time. Optionally, you can also shard the workload over multiple jobs/machines concurrently to speed up the process:
+    ```python
+    img = Image.open(file_path).convert("RGB")
+    buffered = BytesIO()
+    img.save(buffered, format="JPEG")
+    img_b64_str = base64.b64encode(buffered.getvalue()).decode()
+    ```
 
-```bash
-# provide the start and end index of the jsonl shard. There are 23098 - 14 shards totally
-# python mmc4_downloader.py <start_idx> <end_idx>
-python mmc4_downloader.py 0 1000  # worker 1
-python mmc4_downloader.py 1000 2000  # worker 2
-```
+3. Save each jsonl file as a pickle object.
 
-3. Filter out invalid samples in MMC4:
+4. Count the number of data in each pickle file and save the number in `filename.count`. `filename.pkl` and `filename.count` should be in the `playground/data/alt_pair_ja/pkl02` directory.
 
-```bash
-python mmc4_filter_and_counter.py
-```
+### Japanese interleaved data
 
-4. Merge images and text into a unified pickle file for each shard:
+1. Download all the jsonl files from [here](https://gitlab.llm-jp.nii.ac.jp/datasets/llm-jp-japanese-interleaved-data).
 
-```bash
-python mmc4_merger.py
-```
+2. Download each image, convert it to a Base64 string, and store it as the value of the `"image_base64"` key.
 
-### COYO-700M Dataset
+3. Save each jsonl file as a pickle object.
 
-1. Download the metadata of COYO-700M:
+4. Count the number of data in each pickle file and save it in `filename.count`. `filename.pkl` and `filename.count` should be in the `playground/data/interleaved_ja/pkl-limit-tokens` directory.
 
-```bash
-huggingface-cli download kakaobrain/coyo-700m --repo-type dataset --local-dir coyo-700m --local-dir-use-symlinks False
-```
+### mmc4-core (subset)
 
-2. Scrawl the COYO images. Note that here we only keep a 20% subset in each shard with the highest CLIP similarity, to balance compute budget and data quality.
+In this [file](mdx/mmc4/mmc4_6m_ids.csv.gz), we provide the shard number and index within each shard for all samples in our training dataset.
+Each line of this file contains `shard_number,index`.
+This indicates that this sample is the `index`th sample in `docs_{shard_number}_v3.pkl`.
+Note that we used non-fewer-face version.
 
-There are totally 128 shards of annotations. Now download each one with the script:
+### coyo (subset)
 
-```bash
-cd coyo
-for SHARD in {0..127}; do
-    python coyo_downloader.py $SHARD
-done
-```
+We share the ids of the data we use in this [file](mdx/coyo/coyo_6m_ids.txt.gz).
+Each line of this file contains the data id.
 
-3. Split downloaded COYO data into multiple shards:
+## Step-2
 
-```bash
-python coyo_splitter.py
-```
+### LLaVA-1.5 Instruction Data (subset)
 
-### LLaVA-1.5 Instruction Data
+We used a subset of the [LLaVA-1.5 Instruction Data](https://huggingface.co/datasets/liuhaotian/LLaVA-Instruct-150K/blob/main/llava_v1_5_mix665k.json) for training.
 
-We use this [file](https://huggingface.co/datasets/liuhaotian/LLaVA-Instruct-150K/blob/main/llava_v1_5_mix665k.json) in our experiments. Please download this dataset from LLaVA authors.
+1. Download [llava_v1_5_subset_358k.json](https://huggingface.co/datasets/llm-jp/llava-instruct-v1_5-en-subset-358k/blob/main/llava_v1_5_subset_358k.json) and place it in the `path/to/VILA-ja/playground/data/LLaVA-Instruct-150K/` directory.
 
-```bash
-huggingface-cli download liuhaotian/LLaVA-Instruct-150K llava_v1_5_mix665k.json --repo-type dataset
-```
+2. Download the images from each dataset. You may find it helpful to refer to the [README in the original LLaVA repository](https://github.com/haotian-liu/LLaVA/blob/main/README.md#visual-instruction-tuning).
 
-### VFlan dataset
 
-#### TextFLAN
+### llava-instruct-ja
 
-1. Download FLAN datasets:
+1. Download [llava_instruct_ja_156k.json](https://huggingface.co/datasets/llm-jp/llava-instruct-ja/blob/main/llava_instruct_ja_156k.json) and place it in the `path/to/VILA-ja/playground/data/llava_instruct_ja/` directory.
 
-```bash
-huggingface-cli download Open-Orca/FLAN --repo-type dataset --local-dir FLAN --local-dir-use-symlinks False
-```
+2. Download images for COCO dataset. Place [train2017](http://images.cocodataset.org/zips/train2017.zip) in the `path/to/VILA-ja/playground/data/coco/train2017/` directory.
 
-2. Preprocess FLAN dataset (sample 1M data from 378M samples):
+### japanese-photos-conv
 
-```bash
-cd sft
-python preprocess_flan.py
-```
+1. Download [japanese_photos_conv_12k.json](https://huggingface.co/datasets/llm-jp/japanese-photos-conversation/blob/main/japanese_photos_conv_12k.json) and place it in the `path/to/VILA-ja/playground/data/japanese-photos/` directory.
 
-#### M3IT Dataset
+2. Download images from https://huggingface.co/datasets/ThePioneer/japanese-photos.
 
-1. Download M3IT datasets:
+### ja-vg-vqa
 
-```bash
-huggingface-cli download MMInstruction/M3IT --repo-type dataset --local-dir M3IT --local-dir-use-symlinks False
-```
+1. Download [ja-vg-vqa_instruct_99k.json](https://huggingface.co/datasets/llm-jp/ja-vg-vqa-conversation/blob/main/ja-vg-vqa_instruct_99k.json) and place it in the `path/to/VILA-ja/playground/data/ja-vg-vqa/` directory.
 
-2. Preprocess M3IT dataset:
+2. Download images for VisualGenome dataset.
 
-```bash
-python preprocess_m3it.py
-```
+### synthdog-ja (subset)
 
-3. (Optional) Split FLAN+M3IT into multiple chunks to reduce CPU memory pressure during training:
+1. Download [synthdog-ja-subset-102k.json](https://huggingface.co/datasets/llm-jp/synthdog-ja-subset-102k/blob/main/synthdog_ja_102k.json) and place it in the `path/to/VILA-ja/playground/data/synthdog-ja/` directory.
 
-```bash
-python split_vflan.py
-```
-
-### LLaVA-Next mixture
-
-You can follow this [page](https://github.com/OpenGVLab/InternVL/tree/main/internvl_chat#prepare-training-datasets) to prepare the data mixture that is proposed by LLaVA-Next.
-
-### Shot2story
-
-Please follow this [page](https://github.com/bytedance/Shot2Story/blob/master/DATA.md) to download the videos. The JSON file can be downloaded with
-
-```bash
-huggingface-cli download mit-han-lab/vila-dataset shot2story_shotonly.json
- --repo-type dataset --local-dir shot2story --local-dir-use-symlinks False
-```
-
-
-### Video_ChatGPT
-
-You can follow this [page](https://github.com/mbzuai-oryx/Video-ChatGPT/blob/main/README.md#video-instruction-dataset-open_file_folder) to prepare Video_ChatGPT dataset.
-
-### Youcook2
-
-Please follow this [page](http://youcook2.eecs.umich.edu/) to download the videos. The JSON file can be downloaded with
-
-```bash
-huggingface-cli download mit-han-lab/vila-dataset youcook_filtered_v3.json --repo-type dataset --local-dir youcook2 --local-dir-use-symlinks False
-```
-
-### Vatex
-
-Please follow this [page](https://eric-xw.github.io/vatex-website/download.html) to download the videos. The JSON file can be downloaded with
-
-```bash
-huggingface-cli download mit-han-lab/vila-dataset vatex_filtered_v3.json --repo-type dataset --local-dir vatex --local-dir-use-symlinks False
-```
-
-### ShareGPT_Video
-
-You can follow this [page](https://huggingface.co/datasets/ShareGPTVideo/train_video_and_instruction) to prepare ShareGPT_Video dataset.
-
-### WIT
-
-The original WIT data can be obtained [google-research-datasets/wit](https://github.com/google-research-datasets/wit/tree/main). \* We subsample ~538K english data from the original WIT dataset and curate a llava conversation format JSON file.
-
-```bash
-huggingface-cli download mit-han-lab/vila-dataset wit_processed_538k.json --repo-type dataset --local-dir WIT --local-dir-use-symlinks False
-```
-
-### GSM8K-ScRel-SFT
-
-We add some math data [gsm8k-ScRel](https://github.com/OFA-Sys/gsm8k-ScRel/blob/main/data/train_use.jsonl) to our SFT stage.
-
-### Sherlock
-
-The image files of Sherlock can be obtained from [VisualGenome](https://visualgenome.org/api/v0/api_home.html) and [VCR](https://visualcommonsense.com/download/) separately. The llava conversation format JSON file can be downloaded with
-
-```bash
-huggingface-cli download mit-han-lab/vila-dataset sherlock_317k.json --repo-type dataset --local-dir sherlock --local-dir-use-symlinks False
-```
-
-### ScienceQA 
-
-We use the train split of ScienceQA. The image data of the train split can be obtained from [ScienceQA](https://huggingface.co/datasets/derek-thomas/ScienceQA) or their [huggingface repo](https://huggingface.co/datasets/derek-thomas/ScienceQA). The llava conversation format JSON file can be downloaded with
-
-```bash
-huggingface-cli download mit-han-lab/vila-dataset scienceqa_train_12k.json --repo-type dataset --local-dir scienceqa --local-dir-use-symlinks False
-```
+2. Save each image in the `path/to/VILA-ja/playground/data/synthdog-ja/image/` directory.
