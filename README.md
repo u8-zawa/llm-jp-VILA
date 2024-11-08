@@ -31,7 +31,7 @@ cp -rv ./llava/train/timm_replace/* ./venv/lib/python3.10/site-packages/timm/
 
 ### 1. Prepare dataset
 
-See [data_prepare/README](data_prepare/README) and prepare the training datasets for each step.
+See [data_prepare/README.md](data_prepare/README.md) and prepare the training datasets for each step.
 
 ### 2. Run scripts
 

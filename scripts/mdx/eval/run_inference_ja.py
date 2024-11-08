@@ -55,12 +55,13 @@ def eval_model(args):
     conv.append_message(conv.roles[0], qs)
     conv.append_message(conv.roles[1], None)
     prompt = conv.get_prompt()
-    print("prompt: ", prompt)
 
     images_tensor = process_images(images, image_processor, model.config).to(model.device, dtype=torch.float16)
     input_ids = tokenizer_image_token(prompt, tokenizer, IMAGE_TOKEN_INDEX, return_tensors="pt").unsqueeze(0).cuda()
 
     print("image tensor shape:", images_tensor.shape)
+    print("prompt:")
+    print(prompt)
 
     with torch.inference_mode():
         output_ids = model.generate(
