@@ -13,6 +13,7 @@
 # limitations under the License.
 #
 # SPDX-License-Identifier: Apache-2.0
+# This file is modified by LLM-jp.
 
 from PIL import Image
 from io import BytesIO

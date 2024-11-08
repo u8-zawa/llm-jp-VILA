@@ -14,6 +14,7 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 # This file is modified from https://github.com/haotian-liu/LLaVA/
+# This file is modified by LLM-jp.
 
 
 import dataclasses
