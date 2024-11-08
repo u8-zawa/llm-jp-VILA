@@ -59,7 +59,8 @@ script: [scripts/mdx/release/3_train_step2.sh](scripts/mdx/release/3_train_step2
 
 ## Evaluations
 
-We used [llm-jp-eval-mm](https://pypi.org/project/eval-mm/).
+We used [llm-jp-eval-mm](https://pypi.org/project/eval-mm/) for evaluation.
+Please note that this is currently in beta version.
 
 ## Inference
 
