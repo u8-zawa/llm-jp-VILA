@@ -626,7 +626,6 @@ def preprocess_llmjp_v3(
             padding="longest",
             max_length=tokenizer.model_max_length,
             truncation=True,
-            add_special_tokens=False,
         ).input_ids
     targets = input_ids.clone()
 
