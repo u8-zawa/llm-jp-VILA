@@ -1,6 +1,6 @@
 # VILA-ja
 
-This repository contains the code for training [llm-jp/llm-jp-3-VILA-14b](https://huggingface.co/llm-jp/llm-jp-3-VILA-14b), modified from [VILA repository](https://github.com/NVlabs/VILA/tree/48aadd55c450b182f82f88ad340800428fa3a161).
+This repository contains the code for training [llm-jp/llm-jp-3-vila-14b](https://huggingface.co/llm-jp/llm-jp-3-vila-14b), modified from [VILA repository](https://github.com/NVlabs/VILA/tree/48aadd55c450b182f82f88ad340800428fa3a161).
 
 ## Installation
 
@@ -66,14 +66,14 @@ Please note that this is currently in beta version.
 
 ```bash
 python -W ignore scripts/mdx/eval/run_inference_ja.py \
-    --model-path llm-jp/VILA-jp-14b \
+    --model-path llm-jp/llm-jp-3-vila-14b \
     --query "<image>\nこの画像について説明してください。" \
     --image-file path/to/image
 ```
 
 ## Model weights
 
-[llm-jp-3-VILA-14b](https://huggingface.co/llm-jp/llm-jp-3-VILA-14b)
+[llm-jp-3-vila-14b](https://huggingface.co/llm-jp/llm-jp-3-vila-14b)
 
 ## License
 The code is released under the [Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0).

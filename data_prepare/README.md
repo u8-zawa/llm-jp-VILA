@@ -13,7 +13,7 @@ The following table shows an overview of the datasets used for training.
 | Step-2 |Japanese|[llava-instruct-ja](https://huggingface.co/datasets/llm-jp/llava-instruct-ja)| 156K |
 |        |        |[japanese-photos-conv](https://huggingface.co/datasets/llm-jp/japanese-photos-conversation)| 12K |
 |        |        |[ja-vg-vqa](https://huggingface.co/datasets/llm-jp/ja-vg-vqa-conversation)| 99K |
-|        |        |[synthdog-ja (subset)](https://huggingface.co/datasets/llm-jp/synthdog-ja-subset-102k) | 102K |
+|        |        |[synthdog-ja](https://huggingface.co/datasets/naver-clova-ix/synthdog-ja) (subset) | 102K |
 |        |English |[LLaVA](https://huggingface.co/datasets/liuhaotian/LLaVA-Instruct-150K) | 158K | 
 |        |        |[VQAv2](https://visualqa.org/) | 53K | 
 |        |        |[GQA](https://cs.stanford.edu/people/dorarad/gqa/index.html) | 46K | 
@@ -106,6 +106,6 @@ We used a subset of the [LLaVA-1.5 Instruction Data](https://huggingface.co/data
 
 ### synthdog-ja (subset)
 
-1. Download [synthdog-ja-subset-102k.json](https://huggingface.co/datasets/llm-jp/synthdog-ja-subset-102k/blob/main/synthdog_ja_102k.json) and place it in the `path/to/VILA-ja/playground/data/synthdog-ja/` directory.
+1. Download all parquet files from [here](https://huggingface.co/datasets/naver-clova-ix/synthdog-ja/tree/main/data) and place them in the `path/to/VILA-ja/playground/data/synthdog-ja/data` directory.
 
-2. Save each image in the `path/to/VILA-ja/playground/data/synthdog-ja/image/` directory.
+2. Run [mdx/synthdog-ja/convert.py](mdx/synthdog-ja/convert.py)
