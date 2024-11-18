@@ -1,4 +1,4 @@
-# VILA-ja
+# llm-jp-VILA
 
 This repository contains the code for training [llm-jp/llm-jp-3-vila-14b](https://huggingface.co/llm-jp/llm-jp-3-vila-14b), modified from [VILA repository](https://github.com/NVlabs/VILA/tree/48aadd55c450b182f82f88ad340800428fa3a161).
 
