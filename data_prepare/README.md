@@ -24,9 +24,9 @@ The following table shows an overview of the datasets used for training.
 
 ### Japanese image text pairs (Step-0)
 
-1. Download [llm-jp_mm_pair_step0_558k.json](https://gitlab.llm-jp.nii.ac.jp/datasets/llm-jp-japanese-image-text-pairs/-/blob/main/llm-jp_mm_pair_step0_558k.json?ref_type=heads) and place it in the `path/to/VILA-ja/playground/data/alt_pair_ja/` directory.
+1. Download [llm-jp_mm_pair_step0_558k.json](https://gitlab.llm-jp.nii.ac.jp/datasets/llm-jp-japanese-image-text-pairs/-/blob/main/llm-jp_mm_pair_step0_558k.json?ref_type=heads) and place it in the `playground/data/alt_pair_ja/` directory.
 
-2. Download each image and save it in the `path/to/VILA-ja/playground/data/alt_pair_ja/image_step0/` directory. Each image file should be named according to the value of the "image" key.
+2. Download each image and save it in the `playground/data/alt_pair_ja/image_step0/` directory. Each image file should be named according to the value of the "image" key.
 
 ### LLaVA-Pretrain
 
@@ -81,31 +81,31 @@ Each line of this file contains the data id.
 
 We used a subset of the [LLaVA-1.5 Instruction Data](https://huggingface.co/datasets/liuhaotian/LLaVA-Instruct-150K/blob/main/llava_v1_5_mix665k.json) for training.
 
-1. Download [llava_v1_5_subset_358k.json](https://huggingface.co/datasets/llm-jp/llava-instruct-v1_5-en-subset-358k/blob/main/llava_v1_5_subset_358k.json) and place it in the `path/to/VILA-ja/playground/data/LLaVA-Instruct-150K/` directory.
+1. Download [llava_v1_5_subset_358k.json](https://huggingface.co/datasets/llm-jp/llava-instruct-v1_5-en-subset-358k/blob/main/llava_v1_5_subset_358k.json) and place it in the `playground/data/LLaVA-Instruct-150K/` directory.
 
 2. Download the images from each dataset. You may find it helpful to refer to the [README in the original LLaVA repository](https://github.com/haotian-liu/LLaVA/blob/main/README.md#visual-instruction-tuning).
 
 
 ### llava-instruct-ja
 
-1. Download [llava_instruct_ja_156k.json](https://huggingface.co/datasets/llm-jp/llava-instruct-ja/blob/main/llava_instruct_ja_156k.json) and place it in the `path/to/VILA-ja/playground/data/llava_instruct_ja/` directory.
+1. Download [llava_instruct_ja_156k.json](https://huggingface.co/datasets/llm-jp/llava-instruct-ja/blob/main/llava_instruct_ja_156k.json) and place it in the `playground/data/llava_instruct_ja/` directory.
 
-2. Download images for COCO dataset. Place [train2017](http://images.cocodataset.org/zips/train2017.zip) in the `path/to/VILA-ja/playground/data/coco/train2017/` directory.
+2. Download images for COCO dataset. Place [train2017](http://images.cocodataset.org/zips/train2017.zip) in the `playground/data/coco/train2017/` directory.
 
 ### japanese-photos-conv
 
-1. Download [japanese_photos_conv_12k.json](https://huggingface.co/datasets/llm-jp/japanese-photos-conversation/blob/main/japanese_photos_conv_12k.json) and place it in the `path/to/VILA-ja/playground/data/japanese-photos/` directory.
+1. Download [japanese_photos_conv_12k.json](https://huggingface.co/datasets/llm-jp/japanese-photos-conversation/blob/main/japanese_photos_conv_12k.json) and place it in the `playground/data/japanese-photos/` directory.
 
 2. Download images from https://huggingface.co/datasets/ThePioneer/japanese-photos.
 
 ### ja-vg-vqa
 
-1. Download [ja-vg-vqa_instruct_99k.json](https://huggingface.co/datasets/llm-jp/ja-vg-vqa-conversation/blob/main/ja-vg-vqa_instruct_99k.json) and place it in the `path/to/VILA-ja/playground/data/ja-vg-vqa/` directory.
+1. Download [ja-vg-vqa_instruct_99k.json](https://huggingface.co/datasets/llm-jp/ja-vg-vqa-conversation/blob/main/ja-vg-vqa_instruct_99k.json) and place it in the `playground/data/ja-vg-vqa/` directory.
 
 2. Download images for VisualGenome dataset.
 
 ### synthdog-ja (subset)
 
-1. Download all parquet files from [here](https://huggingface.co/datasets/naver-clova-ix/synthdog-ja/tree/main/data) and place them in the `path/to/VILA-ja/playground/data/synthdog-ja/data` directory.
+1. Download all parquet files from [here](https://huggingface.co/datasets/naver-clova-ix/synthdog-ja/tree/main/data) and place them in the `playground/data/synthdog-ja/data` directory.
 
 2. Run [mdx/synthdog-ja/convert.py](mdx/synthdog-ja/convert.py)
